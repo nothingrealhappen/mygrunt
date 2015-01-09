@@ -1,101 +1,125 @@
-module.exports =function(grunt) {
-
-    // 配置
-
-    grunt.initConfig({
-
-        pkg : grunt.file.readJSON('package.json'),
-
-        less: {
-            development: {
-                options: {
-                    compress: false,
-                    yuicompress: false
-                },
-                files: {
-                    "mobile/css/style.css": "mobile/css/style.less",
-                    "css/style.css": "css/style.less",
-                    "css/lol.css": "css/lol.less"
-                }
-            }
-        },
-
-        concat : {
-
-            css : {
-
-                src: ['mobile/css/ratchet.min.css','mobile/css/ratchet-theme-ios.min.css','mobile/css/style.css'],
-
-                dest:'mobile/css/all.css'
-
-            }
-
-        },
-
-        cssmin: {
-
-            css: {
-
-                src:'mobile/css/all.css',
-
-                dest:'mobile/css/all-min.css'
-
-            }
-
-        },
-
-        watch: {
-            files: ['mobile/css/style.less','css/style.less','css/lol.less'],
-                tasks: ['less','concat','cssmin']
-        },
-
-        imagemin: {
-            /* 压缩图片大小 */
-            dist: {
-                options: {
-                    optimizationLevel: 3 //定义 PNG 图片优化水平
-                },
-                files: [{
-                    expand: true,
-                    cwd: 'images/',
-                    src: ['**/*.{png,jpg,jpeg}'], // 优化 img 目录下所有 png/jpg/jpeg 图片
-                    dest: 'images/' // 优化后的图片保存位置，覆盖旧图片，并且不作提示
-                }]
-            }
-        },
-        mobileimagemin: {
-            /* 压缩图片大小 */
-            dist: {
-                options: {
-                    optimizationLevel: 3 //定义 PNG 图片优化水平
-                },
-                files: [{
-                    expand: true,
-                    cwd: 'mobile/images/',
-                    src: ['**/*.{png,jpg,jpeg}'], // 优化 img 目录下所有 png/jpg/jpeg 图片
-                    dest: 'mobile/images/' // 优化后的图片保存位置，覆盖旧图片，并且不作提示
-                }]
-            }
+module.exports = function(grunt) {
+  grunt.initConfig({
+    connect: {
+      server: {
+        options: {
+          port: 9000, //run on port 9000
+          open: false //open browser
         }
+      }
+    },
+    uglify: {
+      options: {},
+      dist: {
+        files: {
+          'assets/javascript/gifguide.min.js': ['src/js/jquery.min.js', 'src/js/vendor/*.js', 'src/js/gifguide.js', 'src/js/generimage.js']
+        }
+      }
+    },
+    concat: {
+      dist: {
+        src: ['src/scss/vendor/*.scss', 'src/scss/_common.scss', 'src/scss/pages/*.scss'],
+        dest: 'src/gifguide.scss'
+      },
+    },
+    sass: {
+      options: {
+        sourceMap: true
+      },
+      dist: {
+        files: {
+          'src/gifguide.css': 'src/gifguide.scss'
+        }
+      }
+    },
+    autoprefixer: {
+      options: {
+        cascade: true
+      },
+      single_file: {
+        src: 'src/gifguide.css'
+      }
+    },
+    cssmin: {
+      target: {
+        files: {
+          'assets/css/gifguide.min.css': ['src/gifguide.css']
+        }
+      }
+    },
+    imagemin: {
+      dist: {
+        options: {
+          optimizationLevel: 3,
+          progressive: true,
+          interlaced: true
+        },
+        files: [{
+        expand: true,
+          cwd: 'src/images/',
+          src: ['**/*.{png,jpg,jpeg}'],
+          dest: 'assets/images/'
+        }]
+      }
+    },
+    watch:{
+      sass:{
+        files: 'src/scss/**/*.scss',
+        tasks:['concat', 'sass', 'autoprefixer', 'cssmin'],
+        options: {
+          livereload: true,
+          interval: 500
+        }
+      },
+      js:{
+        files: ['src/js/gifguide.js', 'src/js/generimage.js'],
+        tasks:['uglify'],
+        options: {
+          livereload: true,
+          interval: 500
+        }
+      },
+      images: {
+        files: ['src/images/*.*'],
+        tasks:['imagemin'],
+        options: {
+          livereload: true,
+          interval: 500
+        }
+      },
+      html: {
+        files: ['*.html'],
+        options: {
+          livereload: true,
+          interval: 500
+        }
+      }
+    },
+    clean: ["deploy/"],
+    copy: {
+      deploy: {
+        files: [
+          // includes files within path
+          {
+            expand: true,
+            src: ['assets/**', '*.html', 'favicon.ico'],
+            dest: 'deploy/'
+          }
+        ],
+      },
+    }
+  });
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-contrib-connect');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-sass');
 
-
-    });
-
-    // 载入concat和css插件，分别对于合并和压缩
-    grunt.loadNpmTasks('grunt-contrib-less');
-
-    grunt.loadNpmTasks('grunt-contrib-watch');
-
-    grunt.loadNpmTasks('grunt-contrib-concat');
-
-    grunt.loadNpmTasks('grunt-css');
-
-    grunt.loadNpmTasks('grunt-contrib-imagemin');
-    
-    grunt.registerTask('img', ['imagemin']);
-    grunt.registerTask('img', ['mobileimagemin']);
-    // 默认任务
-
-    grunt.registerTask('default', ['less','concat','cssmin']);
-
-};
+  grunt.registerTask('default', ['imagemin', 'uglify', 'concat', 'sass', 'autoprefixer', 'cssmin', 'connect', 'watch']);
+  grunt.registerTask('deploy', ['clean', 'copy:deploy']);
+}
