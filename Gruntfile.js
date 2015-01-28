@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       output: './assets/',
       css: '<% paths.output %>/css/',
       js: '<% paths.output %>/js/'
-    }
+    },
 
     // generate a local server
     connect: {
@@ -119,17 +119,18 @@ module.exports = function(grunt) {
 
       // watch images
       images: {
-        files: ['<% paths.src %>images/*.*'],
+        files: ['<% paths.src %>images/**/*.{png,jpg,jpeg,gif}'],
         tasks:['imagemin'],
         options: {
           livereload: true,
           interval: 500
         }
-      },
+      }
 
-      // wath docuemnt file
-      html: {
-        files: ['**/*.html', '**/*.php', '**/*.slim'],
+      // document
+      static: {
+        files: ['**/*.{slim,html}'],
+        tasks:['imagemin'],
         options: {
           livereload: true,
           interval: 500
