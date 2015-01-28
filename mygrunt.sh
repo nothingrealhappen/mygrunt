@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
 function setup_project() {
+    mkdir "src"
     mkdir "src/js"
     mkdir "src/image"
     mkdir "src/css"
