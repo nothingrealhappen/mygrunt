@@ -16,5 +16,8 @@ else
     curl -o 'package.json' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/package.json'
     curl -o  'Gruntfile.js' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/Gruntfile.js'
     setup_project
-    rm 'mygrunt.sh'
+    read -p '项目已初始化完毕是否需要删出本脚本 ？' yn
+    case $yn in
+        [Yy]* ) rm 'mygrunt.sh'; break;
+    esac
 fi
