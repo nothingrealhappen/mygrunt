@@ -16,4 +16,5 @@ else
     curl -o 'package.json' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/package.json'
     curl -o  'Gruntfile.js' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/Gruntfile.js'
     setup_project
+    rm 'mygrunt.sh'
 fi
