@@ -102,7 +102,7 @@ module.exports = function(grunt) {
         // if you change the director to **/*.scss grunt will error
         files: ['<% paths.srccss %>*.scss',
                 '<% paths.srccss %>pages/*.scss',
-                '<% paths.srccss %>vendor/*.scss',]
+                '<% paths.srccss %>vendor/*.scss']
         tasks:['concat', 'sass', 'autoprefixer', 'cssmin'],
         options: {
           livereload: true,
