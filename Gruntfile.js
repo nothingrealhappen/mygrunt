@@ -99,7 +99,10 @@ module.exports = function(grunt) {
     watch:{
       // watch sass
       sass:{
-        files: '<% paths.srccss %>**/*.scss',
+        // if you change the director to **/*.scss grunt will error
+        files: ['<% paths.srccss %>*.scss',
+                '<% paths.srccss %>pages/*.scss',
+                '<% paths.srccss %>vendor/*.scss',]
         tasks:['concat', 'sass', 'autoprefixer', 'cssmin'],
         options: {
           livereload: true,
@@ -109,7 +112,7 @@ module.exports = function(grunt) {
 
       // watch js
       js:{
-        files: ['<% paths.srcjs %>**/*.js'],
+        files: ['<% paths.srcjs %>*.js'],
         tasks:['uglify'],
         options: {
           livereload: true,
