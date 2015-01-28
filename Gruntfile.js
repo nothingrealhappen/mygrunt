@@ -1,14 +1,15 @@
 module.exports = function(grunt) {
-  grunt.initConfig({
+  var paths = {
+    src: './src/',
+    srcjs: './src/js/',
+    srccss: './src/css/',
+    output: './assets/',
+    css: './assets/css/',
+    js: './assets/js/'
+  };
 
-    var paths = {
-      src: './src/',
-      srcjs: './src/js/',
-      srccss: './src/css/',
-      output: './assets/',
-      css: './assets/css/',
-      js: './assets/js/'
-    },
+  grunt.initConfig({
+    paths: paths,
 
     // generate a local server
     connect: {
@@ -25,10 +26,10 @@ module.exports = function(grunt) {
       options: {},
       dist: {
         files: {
-          '<% paths.js %>app.min.js':
+          '<%= paths.js %>app.min.js':
             [
               // all js files should be here
-              '<% paths.srcjs %>js file'
+              '<%= paths.srcjs %>js file'
             ]
         }
       }
@@ -38,11 +39,11 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
-          '<% paths.srccss %>vendor/*.scss',
-          '<% paths.srccss %>_common.scss',
-          '<% paths.srccss %>pages/*.scss'
+          '<%= paths.srccss %>vendor/*.scss',
+          '<%= paths.srccss %>_common.scss',
+          '<%= paths.srccss %>pages/*.scss'
         ],
-        dest: '<% paths.css %>app.scss'
+        dest: '<%= paths.css %>app.scss'
       },
     },
 
@@ -53,7 +54,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          '<% paths.css%>app.css': '<% paths.css %>app.scss'
+          '<%= paths.css%>app.css': '<%= paths.css %>app.scss'
         }
       }
     },
@@ -64,7 +65,7 @@ module.exports = function(grunt) {
         cascade: true
       },
       single_file: {
-        src: '<% paths.css%>app.css'
+        src: '<%= paths.css%>app.css'
       }
     },
 
@@ -72,7 +73,7 @@ module.exports = function(grunt) {
     cssmin: {
       target: {
         files: {
-          '<% paths.css %>app.min.css': ['<% paths.css%>app.css']
+          '<%= paths.css %>app.min.css': ['<%= paths.css%>app.css']
         }
       }
     },
@@ -87,9 +88,9 @@ module.exports = function(grunt) {
         },
         files: [{
         expand: true,
-          cwd: '<% paths.src %>images/',
+          cwd: '<%= paths.src %>images/',
           src: ['**/*.{png,jpg,jpeg}'],
-          dest: '<% paths.output %>images/'
+          dest: '<%= paths.output %>images/'
         }]
       }
     },
@@ -99,9 +100,9 @@ module.exports = function(grunt) {
       // watch sass
       sass:{
         // if you change the director to **/*.scss grunt will error
-        files: ['<% paths.srccss %>*.scss',
-                '<% paths.srccss %>pages/*.scss',
-                '<% paths.srccss %>vendor/*.scss'],
+        files: ['<%= paths.srccss %>*.scss',
+                '<%= paths.srccss %>pages/*.scss',
+                '<%= paths.srccss %>vendor/*.scss'],
         tasks:['concat', 'sass', 'autoprefixer', 'cssmin'],
         options: {
           livereload: true,
@@ -111,7 +112,7 @@ module.exports = function(grunt) {
 
       // watch js
       js:{
-        files: ['<% paths.srcjs %>*.js'],
+        files: ['<%= paths.srcjs %>*.js'],
         tasks:['uglify'],
         options: {
           livereload: true,
@@ -121,7 +122,7 @@ module.exports = function(grunt) {
 
       // watch images
       images: {
-        files: ['<% paths.src %>images/**/*.{png,jpg,jpeg,gif}'],
+        files: ['<%= paths.src %>images/**/*.{png,jpg,jpeg,gif}'],
         tasks:['imagemin'],
         options: {
           livereload: true,
@@ -146,7 +147,7 @@ module.exports = function(grunt) {
           // includes files within path
           {
             expand: true,
-            src: ['<% paths.output %>**', '*.html', 'favicon.ico'],
+            src: ['<%= paths.output %>**', '*.html', 'favicon.ico'],
             dest: 'deploy/'
           }
         ],
