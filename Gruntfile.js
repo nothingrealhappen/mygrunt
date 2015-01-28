@@ -1,52 +1,84 @@
 module.exports = function(grunt) {
   grunt.initConfig({
+
+    paths: {
+      src: './src/',
+      srcjs: './src/js/',
+      srccss: './src/css/',
+
+      output: './assets/',
+      css: '<% paths.output %>/css/',
+      js: '<% paths.output %>/js/'
+    }
+
+    // generate a local server
     connect: {
       server: {
         options: {
-          port: 9000, //run on port 9000
+          port: 9000,
           open: false //open browser
         }
       }
     },
+
+    // javascript merge and compress
     uglify: {
       options: {},
       dist: {
         files: {
-          'assets/javascript/gifguide.min.js': ['src/js/jquery.min.js', 'src/js/vendor/*.js', 'src/js/gifguide.js', 'src/js/generimage.js']
+          '<% paths.js %>app.min.js':
+            [
+              // all js files should be here
+              '<% paths.srcjs %>js file'
+            ]
         }
       }
     },
+
+    // first you should merge all scss files
     concat: {
       dist: {
-        src: ['src/scss/vendor/*.scss', 'src/scss/_common.scss', 'src/scss/pages/*.scss'],
-        dest: 'src/gifguide.scss'
+        src: [
+          '<% paths.srccss %>vendor/*.scss',
+          '<% paths.srccss %>_common.scss',
+          '<% paths.srccss %>pages/*.scss'
+        ],
+        dest: '<% paths.css %>app.scss'
       },
     },
+
+    // compile scss file
     sass: {
       options: {
         sourceMap: true
       },
       dist: {
         files: {
-          'src/gifguide.css': 'src/gifguide.scss'
+          '<% paths.css%>app.css': '<% paths.css %>app.scss'
         }
       }
     },
+
+    // add -moz -webkit -o automatically
     autoprefixer: {
       options: {
         cascade: true
       },
       single_file: {
-        src: 'src/gifguide.css'
+        src: '<% paths.css%>app.css'
       }
     },
+
+    // compress css file
     cssmin: {
       target: {
         files: {
-          'assets/css/gifguide.min.css': ['src/gifguide.css']
+          '<% paths.css %>app.min.css': ['<% paths.css%>app.css']
         }
       }
     },
+
+    // compress images
     imagemin: {
       dist: {
         options: {
@@ -56,39 +88,48 @@ module.exports = function(grunt) {
         },
         files: [{
         expand: true,
-          cwd: 'src/images/',
+          cwd: '<% paths.src %>images/',
           src: ['**/*.{png,jpg,jpeg}'],
-          dest: 'assets/images/'
+          dest: '<% paths.output %>images/'
         }]
       }
     },
+
+    // auto watch file change and reload browser
     watch:{
+      // watch sass
       sass:{
-        files: 'src/scss/**/*.scss',
+        files: '<% paths.srccss %>**/*.scss',
         tasks:['concat', 'sass', 'autoprefixer', 'cssmin'],
         options: {
           livereload: true,
           interval: 500
         }
       },
+
+      // watch js
       js:{
-        files: ['src/js/gifguide.js', 'src/js/generimage.js'],
+        files: ['<% paths.srcjs %>**/*.js'],
         tasks:['uglify'],
         options: {
           livereload: true,
           interval: 500
         }
       },
+
+      // watch images
       images: {
-        files: ['src/images/*.*'],
+        files: ['<% paths.src %>images/*.*'],
         tasks:['imagemin'],
         options: {
           livereload: true,
           interval: 500
         }
       },
+
+      // wath docuemnt file
       html: {
-        files: ['*.html'],
+        files: ['**/*.html', '**/*.php', '**/*.slim'],
         options: {
           livereload: true,
           interval: 500
@@ -102,7 +143,7 @@ module.exports = function(grunt) {
           // includes files within path
           {
             expand: true,
-            src: ['assets/**', '*.html', 'favicon.ico'],
+            src: ['<% paths.output %>**', '*.html', 'favicon.ico'],
             dest: 'deploy/'
           }
         ],
