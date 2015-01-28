@@ -5,10 +5,9 @@ module.exports = function(grunt) {
       src: './src/',
       srcjs: './src/js/',
       srccss: './src/css/',
-
       output: './assets/',
-      css: '<% paths.output %>/css/',
-      js: '<% paths.output %>/js/'
+      css: './assets/css/',
+      js: './assets/js/'
     },
 
     // generate a local server
