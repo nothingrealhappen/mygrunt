@@ -133,7 +133,6 @@ module.exports = function(grunt) {
       // document
       static: {
         files: ['**/*.{slim,html}'],
-        tasks:['imagemin'],
         options: {
           livereload: true,
           interval: 500
