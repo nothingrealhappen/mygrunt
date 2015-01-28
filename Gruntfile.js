@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
   grunt.initConfig({
 
-    paths: {
+    var paths = {
       src: './src/',
       srcjs: './src/js/',
       srccss: './src/css/',
