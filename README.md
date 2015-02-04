@@ -33,3 +33,7 @@
 }
 
 ```
+###一键运行脚本
+`curl -o mygrunt.sh https://raw.githubusercontent.com/liyaodong/mygrunt/master/mygrunt.sh && sh mygrunt.sh`
+
+当然这也是一个很方便且很快的方法 ：）
