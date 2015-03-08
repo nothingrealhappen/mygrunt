@@ -16,6 +16,7 @@ else
     curl -o  'index.html' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/index.html'
     setup_project
     mkdir 'src/css/ src/js/ src/images'
+    git init
     read -p '项目已初始化完毕是否需要删除本脚本 ？' yn
     case $yn in
         [Yy]* ) rm 'mygrunt.sh'; break;
