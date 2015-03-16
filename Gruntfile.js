@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         files: {
           '<%= paths.js %>app.min.js':
             [
-              // all js files should be here
+              // TODO: all js files should be here
               '<%= paths.srcjs %>js file'
             ]
         }
@@ -92,11 +92,24 @@ module.exports = function(grunt) {
       }
     },
 
+    // slim complie
+    slim: {
+      dist: {
+        options: {
+          pretty: true
+        },
+        files: {
+          // TODO: add your slim file to here
+          'index.html': 'index.slim'
+        }
+      }
+    },
+
     // auto watch file change and reload browser
     watch:{
       // watch sass
       sass:{
-        // if you change the director to **/*.scss grunt will error
+        // TODO: if you change the director to **/*.scss grunt will error
         files: ['<%= paths.srccss %>*.scss',
                 '<%= paths.srccss %>pages/*.scss',
                 '<%= paths.srccss %>vendor/*.scss'],
@@ -129,7 +142,8 @@ module.exports = function(grunt) {
 
       // document
       static: {
-        files: ['**/*.{slim,html}'],
+        files: ['**/*.{slim}'],
+        tasks: ['slim'],
         options: {
           livereload: true,
           interval: 500
@@ -160,7 +174,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-slim');
 
-  grunt.registerTask('default', ['imagemin', 'uglify', 'concat', 'sass', 'autoprefixer', 'cssmin', 'connect', 'watch']);
+  grunt.registerTask('default', ['imagemin', 'uglify', 'concat', 'sass', 'autoprefixer', 'cssmin', 'slim', 'connect', 'watch']);
   grunt.registerTask('deploy', ['clean', 'copy:deploy']);
 }

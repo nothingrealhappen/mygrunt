@@ -14,8 +14,9 @@
     "grunt-contrib-sass": "^0.9.2",
     "grunt-contrib-uglify": "^0.7.0",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-css": ">0.0.0",
-    "grunt-sass": "^0.17.0",
     "load-grunt-tasks": "^2.0.0"
+  },
+  "devDependencies": {
+    "grunt-slim": "^0.1.0"
   }
 }
