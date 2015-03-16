@@ -15,6 +15,9 @@ else
     curl -o  '.gitignore' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/.gitignore'
     curl -o  'index.slim' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/index.slim'
     setup_project
+    mkdir -p 'src/css/'
+    mkdir -p 'src/js/'
+    mkdir -p 'src/images/'
     touch 'src/css/_common.scss'
     touch 'src/js/app.js'
     read -p '项目已初始化完毕是否需要删除本脚本 ？(y|n)' yn
