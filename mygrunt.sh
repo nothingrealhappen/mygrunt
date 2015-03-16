@@ -13,11 +13,11 @@ else
     curl -o 'package.json' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/package.json'
     curl -o  'Gruntfile.js' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/Gruntfile.js'
     curl -o  '.gitignore' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/.gitignore'
-    curl -o  'index.html' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/index.html'
+    curl -o  'index.slim' 'https://raw.githubusercontent.com/liyaodong/mygrunt/master/index.slim'
     setup_project
-    mkdir 'src/css/'
-    mkdir 'src/js/'
-    mkdir 'src/images'
+    mkdir './src/css/'
+    mkdir './src/js/'
+    mkdir './src/images/'
     git init
     read -p '项目已初始化完毕是否需要删除本脚本 ？' yn
     case $yn in
